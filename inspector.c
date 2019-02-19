@@ -11,6 +11,9 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <unistd.h>
+#include "system_info.h"
+#include "hardware_info.h"
+#include "task_info.h"
 
 /* Preprocessor Directives */
 #ifndef DEBUG
@@ -69,7 +72,8 @@ int main(int argc, char *argv[])
         switch (c) {
             case 'a':
                 options = all_on;
-                break;
+                print_sys(procfs_loc);
+                print_hardware(procfs_loc);
             case 'h':
                 print_usage(argv);
                 return 0;
@@ -82,13 +86,14 @@ int main(int argc, char *argv[])
                 break;
             case 'r':
                 options.hardware = true;
-                break;
+                print_hardware(procfs_loc);
             case 's':
                 options.system = true;
-                break;
+                print_sys(procfs_loc);
             case 't':
                 options.task_summary = true;
-                break;
+                // print_task(procfs_loc);
+                // break;
             case '?':
                 if (optopt == 'p') {
                     fprintf(stderr,
@@ -124,6 +129,6 @@ int main(int argc, char *argv[])
             options.system ? "system " : "",
             options.task_list ? "task_list " : "",
             options.task_summary ? "task_summary" : "");
-
+    
     return 0;
 }
