@@ -357,7 +357,7 @@ void hw_traverse(char *name) {
 	struct dirent *sub_dir;
 
 	if (dir != NULL) {
-		// Conditional to check if everything is taken care of
+		// Conditional statement to check if everything is taken care of
 		if (strlen(model) == 0 || units == 0 || strlen(load_avg) == 0 || memory == false) {
 			while ((sub_dir = readdir(dir)) != NULL) {
 				// Creating a variable 'new_dir' that has the exact path of the current working directory
