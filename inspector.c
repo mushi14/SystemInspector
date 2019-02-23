@@ -72,8 +72,7 @@ int main(int argc, char *argv[])
         switch (c) {
             case 'a':
                 options = all_on;
-                print_sys(procfs_loc);
-                print_hardware(procfs_loc);
+                break;
             case 'h':
                 print_usage(argv);
                 return 0;
@@ -82,18 +81,16 @@ int main(int argc, char *argv[])
                 break;
             case 'p':
                 procfs_loc = optarg;
-                alt_proc = true;
                 break;
             case 'r':
                 options.hardware = true;
-                print_hardware(procfs_loc);
+                break;
             case 's':
                 options.system = true;
-                print_sys(procfs_loc);
+                break;
             case 't':
                 options.task_summary = true;
-                // print_task(procfs_loc);
-                // break;
+                break;
             case '?':
                 if (optopt == 'p') {
                     fprintf(stderr,
@@ -104,6 +101,7 @@ int main(int argc, char *argv[])
                     fprintf(stderr,
                             "Unknown option character `\\x%x'.\n", optopt);
                 }
+
                 print_usage(argv);
                 return 1;
             default:
@@ -122,6 +120,23 @@ int main(int argc, char *argv[])
     if (argc <= 1) {
         /* No args (or -p only). Enable all options: */
         options = all_on;
+    }
+
+    // Passing in functions from header files according to the flags
+    if (chdir(procfs_loc) == -1) {
+        return -1;
+    } 
+    if (options.system) {
+        print_sys(procfs_loc);
+    }
+    if (options.hardware) {
+        print_hardware(procfs_loc);
+    }
+    if (options.task_summary) {
+        print_task(procfs_loc);
+    }
+    if (options.task_list) {
+        print_list(procfs_loc);
     }
 
     LOG("Options selected: %s%s%s%s\n",
