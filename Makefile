@@ -1,7 +1,7 @@
 # Set the following to '0' to disable log messages:
 debug=1
 
-inspector: inspector.c
+inspector: inspector.c task_info.h hardware_info.h system_info.h
 	gcc -g -Wall -DDEBUG=$(debug) $< -o $@
 
 clean:
